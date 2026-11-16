@@ -99,7 +99,7 @@ het aankomen in plaats van dat de AXUM ineens
 
 ✻ Cooked for 36s · done 11:46 PM
 
-❯ wacht woord van ssh is user root en wachtwoordn
+
 
   Searched for 1 pattern, ran 1 shell command
 

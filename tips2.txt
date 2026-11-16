@@ -1,0 +1,52 @@
+Technische samenvatting (16-11-2026)
+
+1. Hoe een kaart aan een voorgedefinieerde set gekoppeld wordt
+
+- Koppeling: de database slaat niet op welke set er geïmporteerd is. AXUM Inzicht leidt het af. Kandidaat-sets zijn de rijen in predefined_node_config met dezelfde man_id, prod_id en firm_major als de kaart.
+- Afleiden: voor elke set en elke offset van −1300 t/m +1300 wordt setpre() (Rack.pm:686-734) exact nagespeeld (axum-ui/app.py, simulate_import). Is het resultaat identiek aan de huidige node_config, dan is de gebruikte set en offset gevonden.
+- De bug: bestaat een bron- of bestemmingspositie (seq + offset) niet, dan koppelt Perl de knop zonder melding aan de eerste bron of bestemming. Module- en bus-nummers worden zonder melding afgekapt.
+- Beste offset: de offset met 0 fouten die het dichtst bij 0 ligt. Is er geen foutloze offset, dan de offset met de minste fouten. Dat leverde op: AD −4, DA −8, CRMDA −16 (daar blijven 8 monitorbus-objecten fout, omdat Perl één offset op alle typen toepast).
+- Let op: "geldig" betekent alleen dat de positie bestaat, niet dat het de bedoelde bron is. Controleer altijd de vergelijkingstabel in het tabblad.
+
+2. Andere bugs in de Perl-webpagina (original-www/)
+
+Alleen gevonden door de code te lezen, niet getest.
+
+┌─────┬──────────────────────────────────────────────────────────────────────────────────────┬─────────────────────────┐
+│  #  │                                         Wat                                          │          Waar           │
+├─────┼──────────────────────────────────────────────────────────────────────────────────────┼─────────────────────────┤
+│ 1   │ Een apostrof in een functielabel geeft een SQL-fout. Door een typfout in de          │ System.pm:139,171       │
+│     │ invoercontrole (template => ontbreekt) wordt het label ook niet gecontroleerd.       │                         │
+├─────┼──────────────────────────────────────────────────────────────────────────────────────┼─────────────────────────┤
+│ 2   │ "Generate" voert DELETE FROM src_config/dest_config uit: je labels gaan verloren en  │ Source.pm:308, Dest.pm  │
+│     │ verwijzingen kunnen naar andere bronnen gaan wijzen                                  │                         │
+├─────┼─────────────────────────────────────────────────────────┼─────────────────────────┤
+│ 3   │ Een import wist eerst node_config en d                  │ Rack.pm:683             │
+├─────┼─────────────────────────────────────────────────────────┼─────────────────────────┤
+│ 4   │ Speciale bronnummers 1280-1284 zijn onbestaat           │ Rack.pm setpre          │
+├─────┼─────────────────────────────────────────────────────────┼─────────────────────────┤
+│ 5   │ Shell-injectie en path traversal via l                  │ System.pm:418           │
+├─────┼─────────────────────────────────────────────────────────┼─────────────────────────┤
+│ 6   │ Shell-injectie via versions?pkg=                                                     │ System.pm:204           │
+├─────┼──────────────────────────────────────────────────────────────────────────────────────┼─────────────────────────┤
+│ 7   │ Kolomnamen uit het verzoek komen ongec                  │ Rack.pm:511/520,        │
+│     │                                                                                      │ System.pm:184           │
+├─────┼─────────────────────────────────────────────────────────┼─────────────────────────┤
+│ 8   │ Wachtwoorden van de webaccounts staan leesbaar in de HTML                            │ System.pm:240           │
+└─────┴─────────────────────────────────────────────────────────┴─────────────────────────┘
+
+3. Volle schijf door logbestanden
+
+- Nu: / is 1,8 GB, 40% gebruikt. De logs zijn groeien ze dus langzaam; een "extreem" log komt
+  door een vloed foutmeldingen, met een eigen
+- Waarom de schijf vol raakt: in /etc/logrotater daemon-log, maar logrotate draait alleen viacron.daily om 00:02.
+  - Een vloed binnen een dag wordt niet op tijd opgeruimd.
+  - Staat het systeem om 00:02 uit, dan wordt ne.log is volgens de status-administratie voorhet laatst opgeruimd in 2011.
+  - postgresql.log heeft helemaal geen opruimr
+- Gevolg van een volle schijf: PostgreSQL kan niet schrijven, dus engine, gateway en webpagina starten niet.
+- Noodoplossing: het log leegmaken in plaats vaxum-engine.log). Een verwijderd bestand blijftopen bij de daemon (fd 3) en geeft pas ruimte vrij na een herstart. Bewaar eerst tail -300 om de oorzaak te kunnen
+  vinden.
+- Voorstel (wacht op jouw "ja"):
+  a. Logrotate voor de AXUM-logs elke 10 minut
+  b. postgresql.log toevoegen aan logrotate.
+  c. Een schijfruimte-meter in AXUM Inzicht.

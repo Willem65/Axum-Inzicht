@@ -1,7 +1,21 @@
 - 13-11 20:33 
 
 --- 2026-11-13 20:33 UTC
-claude vertel me wat je hier ziet en hoe we het zouden kunnen verbeteren http://192.168.1.222/  Ik zal even uitleggen waar dit voor bedoeld is. Hier zie je een web pagina waarmee je de instellingen van de postgress data base kunt instellen voor verschillende fysieke nodes en hardware . hiermee word ingesteld welke insteek kaarten met een eigen id een input source zijn of output source, er zit ook vu meter metering in om vi het mambanet protocol de data door te geven ook de feders en knoppen zijn nodes die een sensor en of actuator bevatten. dus zo als je wel kunt zien dit is een configuratie pagina  voor de audio mixer die uit verschillende nodes kan bestaan. er zitten in het rack allemaal kaarten die en ook de engine is daar aanwezig. in de engine draait dus een webserver , een postgres server en adress server en een engine en een gateway die alle verbindingen koppeld en door geeft. het is de axum digitale mengpaneel van d en r .ik zou graag willen weten of we ipv deze webpagina een andere omgeving zou gemaakt kunnen worden om het inzichtelijk te maken. eigen lijk een nieuwe manier om de database postgres in te stellen en uit te lezen. want postgress werkt met triggers. . ik kan met heidi sql de datebase bekijken en aanpassen. net zoals je ongeveer met de deze web pagina doet. de webpagina is gemaakt met javascrip en perl en ook nog met een frame work yawft of zoiets yet a other frame fork boven op perl waar ik gek van word. hoe zouden we deze onoverzichtelijk pagina die de database bevat duidelijker zichtbaar kunnen maken?
+claude vertel me wat je hier ziet en hoe we het zouden kunnen verbeteren http://192.168.1.222/  Ik zal even uitleggen waar dit voor bedoeld is. 
+Hier zie je een web pagina waarmee je de instellingen van de postgress data base kunt instellen voor verschillende fysieke nodes en hardware. 
+Hiermee word ingesteld welke insteek kaarten met een eigen id een input source zijn of output source, er zit ook vu meter metering in om vi het mambanet protocol de data door te geven ook de feders en knoppen zijn nodes die een sensor en of actuator bevatten. 
+Dus zo als je wel kunt zien dit is een configuratie pagina  voor de audio mixer die uit verschillende nodes kan bestaan. 
+Er zitten in het rack allemaal kaarten die en ook de engine is daar aanwezig. 
+In de engine draait dus een webserver , een postgres server en adress server en een engine en een gateway die alle verbindingen koppeld en door geeft. 
+Het is de axum digitale mengpaneel van d en r .
+Ik zou graag willen weten of we ipv deze webpagina een andere omgeving zou gemaakt kunnen worden om het inzichtelijk te maken. 
+
+Eigenlijk een nieuwe manier om de database postgres in te stellen en uit te lezen. 
+Want postgress werkt met triggers. . 
+Ik kan met heidi sql de datebase bekijken en aanpassen. 
+Net zoals je ongeveer met de deze web pagina doet. 
+De webpagina is gemaakt met javascrip en perl en ook nog met een frame work yawft of zoiets yet a other frame fork boven op perl waar ik gek van word. 
+Hoe zouden we deze onoverzichtelijk pagina die de database bevat duidelijker zichtbaar kunnen maken?
 
 --- 2026-11-13 20:40 UTC
 de user name is : ..... en het wachtwoord is ook: ......  . en kijk dan nog eens wat je er van vind ?

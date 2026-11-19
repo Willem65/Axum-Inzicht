@@ -1,28 +1,143 @@
 - 13-11 20:33 
 
-Claude vertel me wat je hier ziet en hoe we het zouden kunnen verbeteren http://192.168.1.222/ Ik zal even uitleggen waar dit voor bedoeld is. Hier zie je een web pagina waarmee je de instellingen van de postgress data base kunt instellen voor verschillende fysieke nodes en hardware. hiermee word ingesteld welke insteek kaarten met een eigen id een input source zijn of output source, er zit ook vu meter metering in om via het mambanet protocol de data door te geven ook de faders en knoppen zijn nodes die een sensor en of actuator bevatten. dus zo als je wel kunt zien dit is een configuratie pagina voor de audio mixer die uit verschillende nodes kan bestaan. er zitten in het rack allemaal kaarten en ook de engine is daar aanwezig. in de engine draait dus een webserver, een postgres server en adress server en een engine en een gateway die alle verbindingen koppeld en door geeft. het is de axum digitale mengpaneel van d en r. ik zou graag willen weten of we ipv deze webpagina een andere omgeving zouden kunnen maken om het inzichtelijk te maken. eigenlijk een nieuwe manier om de database postgres in te stellen en uit te lezen. want postgress werkt met triggers. ik kan met heidi sql de database bekijken en aanpassen, net zoals je ongeveer met deze web pagina doet. de webpagina is gemaakt met javascript en perl en ook nog met een framework yawf of zoiets, yet another framework bovenop perl waar ik gek van word. hoe zouden we deze onoverzichtelijke pagina die de database bevat duidelijker zichtbaar kunnen maken?
+--- 2026-11-13 20:33 UTC
+claude vertel me wat je hier ziet en hoe we het zouden kunnen verbeteren http://192.168.1.222/  Ik zal even uitleggen waar dit voor bedoeld is. Hier zie je een web pagina waarmee je de instellingen van de postgress data base kunt instellen voor verschillende fysieke nodes en hardware . hiermee word ingesteld welke insteek kaarten met een eigen id een input source zijn of output source, er zit ook vu meter metering in om vi het mambanet protocol de data door te geven ook de feders en knoppen zijn nodes die een sensor en of actuator bevatten. dus zo als je wel kunt zien dit is een configuratie pagina  voor de audio mixer die uit verschillende nodes kan bestaan. er zitten in het rack allemaal kaarten die en ook de engine is daar aanwezig. in de engine draait dus een webserver , een postgres server en adress server en een engine en een gateway die alle verbindingen koppeld en door geeft. het is de axum digitale mengpaneel van d en r .ik zou graag willen weten of we ipv deze webpagina een andere omgeving zou gemaakt kunnen worden om het inzichtelijk te maken. eigen lijk een nieuwe manier om de database postgres in te stellen en uit te lezen. want postgress werkt met triggers. . ik kan met heidi sql de datebase bekijken en aanpassen. net zoals je ongeveer met de deze web pagina doet. de webpagina is gemaakt met javascrip en perl en ook nog met een frame work yawft of zoiets yet a other frame fork boven op perl waar ik gek van word. hoe zouden we deze onoverzichtelijk pagina die de database bevat duidelijker zichtbaar kunnen maken?
 
+--- 2026-11-13 20:40 UTC
+de user name is : ..... en het wachtwoord is ook: ......  . en kijk dan nog eens wat je er van vind ?
 
-- 20:40 de user name is: ...... en het wachtwoord is ook: ...... . en kijk dan nog eens wat je er van vind?
-- 20:51 het wachtwoord voor de ssh en om in de database te kunnen komen is user: ..... en wachtwoord: ...... . Kijk voor mij naar de /www map die in de root staat waar de webpagina staat, daar staat de perl code enzovoort. ik zou graag een compleet andere pagina willen kunnen maken die er veel visueler uit gaat zien ipv dat perl
-- 20:58–20:59 sudo apt install python3-venv per met: "ik heb dit in een terminal met
-  wachtwoord uitgevoerd")
-- 21:08 ik zie het rack met de kaarten   visueel, ik zie de crmda dsp enz. maar hoekomt dit nu tot stand, hoe heb je dit gemaakt?
-- 21:19 dit is wel heel leuk
-- 21:30 Het AD-kaart-probleem oplossen. dit zou ik op de bestaande manier kunnen oplossen. is dat een goed idee?          21:36 ik kan op deze pagina 192.168.1.222 d
-- 21:39 ik heb nu functies geimporteerd vanuit de rack configuratie en ga nu het rack opnieuw opstarten                   21:44 de willemrack-ad is wel in de mambanet niet als source te kiezen. ik overweeg nu, hem in een ander slot te stoppen? 21:48 in de rack configuratie zie ik de ad at klungelen met de offset bij het importeren van de functies voor die kaart. een oplossizichtbaar te maken? 21:50 nou ik kan je nog vertellen dat je met die perl webpagina, waar waarschijnlijk bugs in zitten
-- 21:53 negatieve of positieve offsets waar we zelf soms geen touw aan vast kunnen knopen leveren soms een oplossing op.  
-- 22:01 dat is mooi, ik kan nu gelijk de offset begrijpen en goed zetten                                                  22:06 kun je de rack-pwr breder maken, want2 ook in beslag. ik bedoel slot 2 word overlapt maar niet aangesloten, de pwr is gewoon 2 sloten breed                                                                  22:08 helemaal rechts zit altijd de engine k in plaatsen 22:09 de engine is net zo breed als een nor 22:11 kun je nog een http://192.168.1.222/smatie erin, en in weer aparte tabbladen de configuratie weergeven 22:24 nee rustig aan, ik ga ze even met de gureren, komt goed 22:28 ik heb in de surface configuratie een
-- 22:41 kun je nog bij het rack links en rechts aan beide zijden een rand maken met 2 montagegaten erin, de randbreedte   iets minder dan een slotbreedte
-- 22:43 en horizontaal boven de kaarten van links naar rechts een dunne rand van dezelfde kleur, net zoals die randen     links en rechts verticaal 22:45 en ook nog zo een horizontale rand aan 22:52 de axum-pwr beslaat qua formaat slot it in slot 20 en is 2 keer zo breed als een gemiddeld slot. de voeding is 3 keer zo breijn in totaal 20 sloten 22:54 dit is prima
-- 23:14 kun je bij kaart inputs (fysiek) zetten en bij de output ook                                                      23:15 ik bedoel in het signaalpad-tab
-- 23:16 schrijf je eigenlijk fysiek of physiek? / oke                                                                     23:20 hoe kan ik dit op een andere pc weergnstalleerd worden?
-- 23:21 maar als deze pc niet aan staat?                                                                                  23:25 kun je het niet op de desbetreffende 23:46 no module named psycopg2 23:53 dat werkt 14-11 01:00 kun je dit project ook op mijn 168.1.125/cgit/ maak een aparte repository hiervoor en push it 01:03 hoe zou je deze repo kunnen mirroren
-- 01:04 doe maar even nog niet, komt later wel                                                                            01:05 kun je onthouden waar we gebleven zijn gaan, want ik ga nu naar bed toe
-                                                                                                                          SSIE 2 (16–17 november) 16-11 22:38 kun je me vertellen hoe je aan n hoe weet je dan de best gekoppelde offset? 22:41 wat voor bugs zitten er nog meer in h 22:45 soms hebben we extreem grote logfilesn ben ik genoodzaakt bijvoorbeeld engine.log te deleten om weer ruimte te krijgen op de harnweg geen ruimte meer om alle processen testarten en werkt de axum niet. de webpage komt in dat geval niet meer in de lucht?
-- 22:47 wachtwoord van ssh is user root en wans kijken
-- 22:54 kun je nu van deze vragen die ik nu net gesteld heb een beknopte duidelijke technische samenvatting maken?
-- 23:03 doe verder niks maar bewaar waar we n naar bed
+--- 2026-11-13 20:51 UTC
+het wacht woor voor de ssh en om in de database te kunnen komen is , user: ..... en wachtwoord: ......   . Kijk voor mi naar de /www map die in de root staat waar de webpagina staat, daar staat de perl code enzovoort ik zou graag een compleet andere pagina willem kunnen maken dat veel meer visueel eruit gaat zien ipv dat perl
+
+--- 2026-11-13 20:58 UTC
+sudo apt install python3-venv python3-pip
+
+--- 2026-11-13 20:59 UTC
+sudo apt install python3-venv python3-pip
+
+--- 2026-11-13 20:59 UTC
+sudo apt install python3-venv python3-pip    ik heb dit in een terminal met wachtwoord uitgevoerd
+
+--- 2026-11-13 21:08 UTC
+ik zie het rack met de kaarten in het slot ik zie de signaal paden visueel ik zie de crmda dsp enz. maar hoe komt dit nu tot stand hoe heb je dit gemaakt ?
+
+--- 2026-11-13 21:19 UTC
+dit is wel heel leuk
+
+--- 2026-11-13 21:30 UTC
+Het AD-kaart-probleem oplossen. dit zou kunnen doen op de bestaande manier kunnen oplossen. is dat een goed idee ?
+
+--- 2026-11-13 21:36 UTC
+ik kan op deze pagina 192.168.1.222 de boel goed zetten
+
+--- 2026-11-13 21:39 UTC
+ik heb nu fu funties geimporteerd vanuit de rack configuratie en ga nu het rack opnieuw opstarten
+
+--- 2026-11-13 21:44 UTC
+in de willemrack-ad is wel in de mambanet configuratie zichtbaar maar niet als source te kiezen ik overweeg nu hem in een ander slot te stoppen ?
+
+--- 2026-11-13 21:48 UTC
+in de rack configuratie zie ik de ad kaart wel maar vaak ik het wat klungelen met de ofset bij het importeren van de functies voor die kaart een oplossing om het in de sources weer zichtbaar te maken ?
+
+--- 2026-11-13 21:50 UTC
+nou ik kan je nog vertellen dat als gebruiker je het zal moeten oplossen met die perl webpagina waar waarschijnlijk bugs in zitten
+
+--- 2026-11-13 21:53 UTC
+negatiefe of positiefe offsets waar we zelf soms geen touw aan vast kunnen knopen levert soms een oplossing op. konden we maar in die 8080 py pagina de foutieve offset weergeven ?
+
+--- 2026-11-13 22:01 UTC
+dat is mooi ik kan nu gelijk de offset begrijpen en goed zetten
+
+--- 2026-11-13 22:06 UTC
+kun je de rack-pwr breder maken , want die power neemt fysiek slot 2 ook in beslag, ik bedoel slot 2 word overlapt maar niet aangesloten de pwr is gewoon 2 loten breedt
+
+--- 2026-11-13 22:08 UTC
+helemaal recht zit altijd de engine in het rack , kun je die er ook in plaatsen
+
+--- 2026-11-13 22:09 UTC
+de engine is net zo breed als een normaal enkel slot
+
+--- 2026-11-13 22:11 UTC
+kun je nog een http://192.168.1.222/system blad maken met de informatie erin in weer aparte tab bladen de configuratie weergeven
+
+--- 2026-11-13 22:24 UTC
+nee rustig aan ik ga ze even met de hand in die perl pagina configureren , komt goed
+
+--- 2026-11-13 22:28 UTC
+ik heb in de surface configuratie een surface toegevoegd
+
+--- 2026-11-13 22:41 UTC
+kun je nog bij het rack links en recht aan beide zijde een rand maken met 2 motage gate erin de rand breedte iets minder dan een slot breedte
+
+--- 2026-11-13 22:43 UTC
+en horizontaal boven de kaarten van links naar rechts een dunne rand van de zelfde kleur net zoals die randen links en rechts vertikaal
+
+--- 2026-11-13 22:45 UTC
+en ook nog zo een horizontale rand aan de onderzijde  van de kaarten
+
+--- 2026-11-13 22:52 UTC
+de axum-pwr beslaat kwa formaat slot 1 , 2 en slot 3 en de engine zit in slot 20 en is 2 keer zo breed als een gemiddeld slot , de voeding is 3 keer zo breed als een normaal slot . er zijn in totaal 20 sloten
+
+--- 2026-11-13 22:54 UTC
+dit is prima
+
+--- 2026-11-13 23:14 UTC
+kun je bij kaart inputs (pysiek) zetten en bij de output ook
+
+--- 2026-11-13 23:15 UTC
+ik bedoel in het signaal pad  tab
+
+--- 2026-11-13 23:16 UTC
+schrijf je eigenlijk fysiek of physiek ?
+
+--- 2026-11-13 23:16 UTC
+oke
+
+--- 2026-11-13 23:20 UTC
+hoe kan ik dit op een andere pc weergeven , moet daar iets voor ginstaleerd worden ?
+
+--- 2026-11-13 23:21 UTC
+maar al s deze pc nietan staat ?
+
+--- 2026-11-13 23:25 UTC
+kun je het niet op de des betreffende pc installeren
+
+--- 2026-11-13 23:46 UTC
+no module named psycopg2
+
+--- 2026-11-13 23:53 UTC
+dat werkt
+
+--- 2026-11-14 01:00 UTC
+kunje dit project ook op mijn git server zetten http://192.168.1.125/cgit/ maak een aparte repository hiervoor en push it
+
+--- 2026-11-14 01:03 UTC
+hoe zou je deze repo kunnen mirroren naar mijn github account ?
+
+--- 2026-11-14 01:04 UTC
+doe maar even nog niet, komt later wel
+
+--- 2026-11-14 01:05 UTC
+kun je onthouden waar we gebleven zijn zodat we later verder kunnen gaan want ik ga nu naar bed toe
+########## SESSIE 2 (16-17 november)
+
+--- 2026-11-16 22:38 UTC
+kun je me vertellen hoe je aan die voorkeerd gekoppeld en hoe weet je dan de best gekoppelde offset ?
+
+--- 2026-11-16 22:41 UTC
+wat voor bugs zitten er nog meer in het axum systeem ?
+
+--- 2026-11-16 22:45 UTC
+soms hebben extreem grootte log files in /var/log directory . dan moet ik genoodzaakt bijvoorbeeld engine.log deleten om weer ruimte te krijgen op de harde schijf . anders is er gewoon weg geen ruimte meer om alle processen te starten en werkt de axum niet. de web page komt in dat geval niet meer in de lucht ?
+
+--- 2026-11-16 22:47 UTC
+wacht woord van ssh is user root en wachtwoord **** , kun je nog eens kijken
+
+--- 2026-11-16 22:54 UTC
+kun je nu van deze vragen die ik nu net gesteld heb een beknopte duidelijke technische samenvatting maken?
+
+--- 2026-11-16 23:03 UTC
+doe verder niks maar bewaar waar we nu gebleven zijn want ik ga zo naar bed
 
 ❯ kun je me vertellen hoe je aan die voorkeerd gekoppeld en hoe weet je dan de best gekoppelde offset ?
 

@@ -1,0 +1,36 @@
+Claude vertel me wat je hier ziet en hoe we het zouden kunnen verbeteren http://192.168.1.222/  Ik zal even uitleggen waar dit voor bedoeld is. 
+ 
+Hier zie je een web pagina waarmee je de instellingen van de postgress data base kunt instellen voor verschillende fysieke nodes en hardware.
+
+ 
+Hiermee wordt ingesteld welke insteek kaarten met een eigen id en een input source zijn of output source.
+
+Er zit ook vu meter metering in om via het mambanet protocol de data door te geven, ook de faders en knoppen zijn nodes die een sensor en of actuator bevatten.
+
+Dus zo als je wel kunt zien dit is een configuratie pagina  voor de audio mixer die uit verschillende nodes kan bestaan. 
+
+Er zitten in het rack allemaal kaarten, en ook de engine is daar aanwezig. 
+
+In de engine draait dus een webserver , een postgres server en adress server en een engine en een gateway die alle verbindingen koppeld en door geeft.
+Het is de axum digitale mengpaneel van d en r .
+
+Ik zou graag willen weten of we ipv deze webpagina een andere omgeving zou gemaakt kunnen worden om het inzichtelijk te maken.
+Eigenlijk een nieuwe manier om de database postgres in te stellen en uit te lezen. 
+
+omdat postgress werkt met triggers.  kan ik met heidi sql de datebase bekijken en aanpassen. 
+
+Net zoals je ongeveer met de deze web pagina doet. 
+
+De webpagina is gemaakt met javascrip en perl en ook nog met een frame work yawft of zoiets, yet a other frame work boven op perl waar ik gek van wordt. 
+
+Hoe zouden we deze onoverzichtelijk pagina die de database bevat duidelijker zichtbaar kunnen maken?
+
+de user name is : ..... en het wachtwoord is ook: ...... . en kijk dan nog eens wat je er van vind ?
+
+het wacht woor voor de ssh en om in de database te kunnen komen is , user: ..... en wachtwoord: ...... . Kijk voor mi naar de /www map die in de root staat waar de webpagina staat, daar staat de perl code enzovoort ik zou graag een compleet andere pagina willem kunnen maken dat veel meer visueel eruit gaat zien ipv dat perl
+
+sudo apt install python3-venv python3-pip ik heb dit in een terminal met wachtwoord uitgevoerd
+
+ik zie het rack met de kaarten in het slot ik zie de signaal paden visueel ik zie de crmda dsp enz. maar hoe komt dit nu tot stand hoe heb je dit gemaakt ?
+
+ik zou graag een rack met de kaarten in het slot willen zien met de signaal paden visueel 

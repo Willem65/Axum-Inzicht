@@ -89,4 +89,35 @@ Twee vragen die bepalen hoe haalbaar dit is:
 - Heb je de C-broncode van de DSP-firmware, het Code Composer-project met AxumCore en AxumModulecfg? Zonder die broncode is route 2 een flink stuk reverse engineering.
 - Zit de PCI2040 op de DSP-kaart zelf, met PCI over de backplane vanaf de Kontron-carrier? Of zitten de Kontron en de DSP-kaart op één bord? Dat bepaalt of route 1 via de backplane kan.
 
+als ik er aan begin dan wil ik dat jij de software grootten deels voor me omzet , dsp pci bus enz.
+
+  Wrote 2 memories
+
+Ja, dat kan ik grotendeels doen. Ik heb dit plan en onze afspraken vastgelegd, zodat ik er in een volgende sessie direct mee verder kan.
+
+Wat ik doe
+- Axum-processen naar ARM omzetten: engine, gateway, address en learner compileren voor Linux op de Zynq. Daarbij ruim ik de 32/64-bit-aannames op en vervang ik de oude afhankelijkheden, zoals OpenSSL 0.9.8 en de oude libpq.
+- Nieuwe DSP-toegangslaag: dsp.c herschrijven zodat hij niet meer via /dev/dsp0 met ioctl werkt, maar via de PCI-core in de FPGA. Alles wat erboven zit, zoals de EQ, de bussen en de meters, blijft dan ongewijzigd.
+- PCI-host in de FPGA (route 1): een eenvoudige PCI-master in VHDL of Verilog voor config-cycles en losse geheugen-reads en -writes naar de PCI2040, plus de AXI-koppeling naar de ARM en een simulatie-testbench.
+- Linux-omgeving: een opzet voor een PetaLinux- of Yocto-image met PostgreSQL, lighttpd en de website, CAN via can0, en de opstartscripts.
+- Later route 2: de DSP-algoritmes in de FPGA bouwen. Dat kan alleen als we de DSP-broncode hebben, of anders na disassembly van de .b0-bestanden.
+- Begeleidend: documentatie, testtools, en de vergelijking tussen het oude en het nieuwe systeem.
+
+Wat bij jou ligt
+- De hardware: de keuze van de Zynq-module en de carrierprint, met de backplane-aansluiting, de PCI-signalen, de CAN-transceiver en de voeding.
+- Testen op het echte rack: meten, luisteren, en programmeren via JTAG. Ik kan de hardware niet zien of aanraken. Ik werk daarom met wat jij meet en terugmeldt, en met wat ik via SSH kan uitlezen.
+- Beslissingen bij twijfel. Bijvoorbeeld als iets niet hetzelfde klinkt of zich niet hetzelfde gedraagt.
+
+Afspraken
+- Je originele broncode op D:\ en de draaiende engine blijven onaangeroerd. Ik werk in een kopie in een nieuwe projectmap met git, zodat je elke wijziging kunt terugzien en terugdraaien.
+- Op de engine lees ik alleen. Ik verander er pas iets als jij dat uitdrukkelijk vraagt.
+
+Wat ik nodig heb voordat we beginnen
+1. De DSP-broncode: heb je het Code Composer-project (met AxumCore en AxumModulecfg) ergens staan?
+2. De plek van de PCI2040: zit hij op de DSP-kaart, met PCI over de backplane vanaf de Kontron-carrier? Een foto of het schema van de backplane of carrier helpt.
+3. De Zynq-hardware: heb je al een Zynq-7020-bord of -module, of moet die nog gekozen worden?
+4. De kernel-driver: de map waar de pci2040-kerneldriver staat. Die is niet strikt nodig, maar wel handig als referentie.
+
+Als je wilt, kan ik nu alvast iets doen waar geen hardware voor nodig is: een werkkopie van de broncode maken en die proef-compileren op een moderne Linux. Dan zien we meteen hoeveel werk het overzetten wordt.
+
 Cooked for 47s · done 0:43

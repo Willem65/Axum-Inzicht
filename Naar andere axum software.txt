@@ -1,0 +1,92 @@
+
+Dit is de complete broncode van de Axum-processen. In engine\ staan ddpci2040.h (de interface naar de driver) en dsp.c. Die lees ik nu.
+
+  Searched for 1 pattern, read 3 files, wrote 1 memory
+
+Ik heb alleen gelezen en niets veranderd. Wat hier staat is de complete broncode van de Axum-processen (engine, gateway, address, learner, meters en sql), inclusief de kant van de engine die met de DSP-kaart praat. Dat is goed nieuws: de engine hoeft dus niet als binary te blijven.
+
+Wat ik gevonden heb
+- engine\ddpci2040.h beschrijft de interface naar de kerneldriver. Die interface is oorspronkelijk een TI/DNA-voorbeelddriver uit 1999.
+- engine\dsp.c laat zien hoe de engine die driver gebruikt.
+
+De kerneldriver zelf, het .c-bestand dat /dev/dsp0 aanmaakt, staat niet in deze map. Misschien zit hij in 2.6.28-ARCH of kernel-build-directory ernaast. Laat maar weten waar, dan kijk ik ook daar.
+
+Hoe het werkt
+1. Er is precies één ioctl, met een functienummer erin. De engine gebruikt daar maar een paar functies van:
+   - de PCI-configuratie lezen en schrijven (DUMP/STORE_CONFIGURATION, WRITE_PCI_REG, vooral voor de EEPROM en de GPIO's);
+   - het fysieke adres en de lengte van twee PCI-gebieden opvragen. Daarna roept de engine mmap aan op /dev/dsp0.
+2. Per DSP zijn er vier HPI-registers (HPIC, HPID met auto-increment, HPIA en HPID), telkens 0x800 uit elkaar in het 32 KB-gebied.
+3. Zo worden de DSP's geboot:
+   - de PCI2040 zet de HPI-resets (CSR +0x14) aan en weer uit;
+   - de engine schrijft het .b0-bestand vanaf adres 0x10001C00 in het geheugen van de DSP;
+   - daarna zet hij het startadres op 0x10000714, en dan start de DSP.
+4. De taakverdeling over de 4 DSP's is nu bevestigd:
+
+| DSP    | Firmware                |
+|--------|-------------------------|
+| 1 en 2 | AxumModule (de kanalen) |
+| 3      | AxumSumming (de bussen) |
+| 4      | AxumFX1 (de effecten)   |
+   De code ondersteunt tot 4 DSP-kaarten (/dev/dsp0 t/m dsp3).
+
+Wat dit betekent voor je plan met een pc
+- De driver is geen probleem meer. Hij doet bijna niets: PCI-config lezen en schrijven en twee geheugengebieden doorgeven. Op een moderne Linux heb je zelfs geen eigen kernelmodule meer nodig. dsp.c kan de PCI2040 rechtstreeks benaderen via /sys/bus/pci/devices/.../resource0, resource1 en config. Dat is een kleine aanpassing in één bestand.
+- Let op bij 64-bit. De code gebruikt overal unsigned long voor 32-bit registers en structs. Op een 64-bit pc is unsigned long 64 bit, en dan kloppen de registertoegang en de config-struct niet meer. Compileer dus 32-bit, of pas het aan naar uint32_t.
+- Het echte knelpunt blijft de PCI-verbinding naar de DSP-kaart. De software is nu goed over te zetten, de hardwarekoppeling niet. Daarom blijft route A (een nieuwer ETX-module) het makkelijkst.
+
+Zal ik de rest van de engine-code doorlopen, met name hoe hij aan de database en MambaNet hangt? Dan weet je precies wat er mee moet naar een nieuwe computer. Of wil je eerst de map met de kerneldriver aanwijzen?
+
+Crunched for 45s · done 0:36
+
+recap: Doel is het Kontron-bord in de Axum-rack te vervangen door een pc; de broncode voor de DSP-aansturing heb ik gelezen en is goed over te zetten. Volgende stap: jij wijst de map met de kerneldriver aan, of ik loop de rest van de engine-code door. (turn off recaps in /config)
+
+> zou in plaats van die pci bus iets anders gedaan kunnen worden. of zou dmv sourcecode van de dsp een andere dsp gebruikt kunnen worden. ik zit te denken aan een zynq7020 van xilinx. zou die krachtig genoeg zijn om de linux omgeving en dsp afhandeling samen met mambanet te kunnen vervangen
+
+Ja, beide kunnen. Een Zynq-7020 is krachtig genoeg om de Kontron-computer, de PCI-brug en de DSP's samen te vervangen. Het meeste werk zit niet in de rekenkracht, maar in het opnieuw bouwen van de DSP-algoritmes.
+
+Is een Zynq-7020 sterk genoeg?
+
+┌────────────────────────────────────────────────┬─────────────────────────────────────────────────────┬────────────────────────────────────────────────────────────────┐
+│                      Taak                      │                         Nu                          │                           Zynq-7020                            │
+├────────────────────────────────────────────────┼─────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────┤
+│ Linux, PostgreSQL, webserver, engine, MambaNet │ Geode LX, 1 core rond 500 MHz                       │ 2× Cortex-A9 op 667–866 MHz, ruim sneller                      │
+├────────────────────────────────────────────────┼─────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────┤
+│ CAN voor MambaNet                              │ serieel-naar-CAN-omzetter op ttyS1                  │ 2 CAN-controllers in de chip; de gateway kiest can0 al vanzelf │
+├────────────────────────────────────────────────┼─────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────┤
+│ Ethernet voor de bedienpanelen                 │ 10/100                                              │ Gigabit                                                        │
+├────────────────────────────────────────────────┼─────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────┤
+│ Audiobewerking                                 │ 4× C6727 floating point, samen rond 7–9 GFLOPS piek │ 220 DSP48-blokken in de FPGA, tientallen GMAC/s                │
+└────────────────────────────────────────────────┴─────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────┘
+
+Een ruwe schatting van wat de audio werkelijk kost, uitgaande van 64 kanalen met filter, 6 EQ-banden en dynamics, 32 bussen en 8 monitorbussen op 48 kHz: ongeveer 0,5 GMAC/s. Dat is een paar procent van wat de FPGA-kant kan. Ook met 32-bit-coëfficiënten en een 48-bit accumulator (nodig voor schone EQ's in het laag) blijft er veel over.
+
+De ARM-cores zelf zou ik níet voor de audio gebruiken. Dat wordt krap, en Linux-latency en audio gaan slecht samen. De taakverdeling wordt dus:
+- ARM: Linux en de Axum-processen.
+- FPGA-deel: alle audio, plus de LVDS-backplane rechtstreeks. Die backplane ken je al uit je CRMDA- en DSP-kaartprojecten.
+
+Een extra voordeel: de Cortex-A9 is 32-bit. Het unsigned long-probleem uit dsp.c verdwijnt dan vanzelf, en de Axum-broncode is vrijwel direct voor ARM te compileren. In je bronmap staan trouwens al Raspberry Pi 4-images en Arch Linux ARM. Het lijkt erop dat iemand al eerder een ARM-versie geprobeerd heeft.
+
+Twee routes
+
+Route 1: Zynq als PCI-host, de DSP-kaart blijft.
+- Een eenvoudige PCI-master in het FPGA-deel. Die hoeft alleen config-cycles en losse geheugen-reads en -writes te doen, want de PCI2040 is gewoon een target.
+- De Zynq vervangt alleen de Kontron. De DSP's, de firmware (.b0) en de geluidskwaliteit blijven precies zoals ze zijn.
+- In dsp.c vervang je de ioctl/mmap-laag door toegang tot de eigen PCI-core.
+- Risico laag tot middel. Het lastigste stuk is de 33 MHz PCI-bus elektrisch goed aansluiten op de backplane.
+
+Route 2: Zynq vervangt alles, ook de DSP-kaart.
+- De DSP-kaart en de engine worden één kaart, en de PCI-bus verdwijnt helemaal.
+- De engine-code past hier goed bij. Alle DSP-toegang loopt via één laag (dsp.h: dsp_set_eq, dsp_set_ch, dsp_set_buss_lvl, dsp_read_module_levelmeters, enzovoort). Die laag schrijf je opnieuw zodat hij naar FPGA-registers schrijft in plaats van via HPI.
+- Wat de grote klus maakt: de algoritmes van AxumModule, AxumSumming en vooral AxumFX1 moeten opnieuw gebouwd worden, in HDL of HLS. Voor dezelfde klank (dynamics, AGC, expander, metering) heb je echt de C-broncode van de DSP-firmware nodig. Op de engine staan alleen de .b0- en .map-bestanden. Uit de map blijkt wel dat het een Code Composer-project was met onder andere AxumCore.obj en DSP/BIOS.
+
+Mijn advies
+
+1. Begin met een kant-en-klaar Zynq-7020-module (een SOM, zoals een MicroZed of een Trenz TE0720) op een eigen carrierkaart. Zo hoef je zelf geen DDR-routing te doen.
+2. Doe eerst route 1 en zet de Axum-software over naar ARM. Dan heb je snel een werkend systeem zonder Kontron, en is het risico laag.
+3. Ga daarna stap voor stap naar route 2. Bouw de algoritmes in de FPGA na en vergelijk ze steeds met de echte DSP's in hetzelfde rack. Dan hoor je meteen of de klank klopt.
+
+Twee vragen die bepalen hoe haalbaar dit is:
+- Heb je de C-broncode van de DSP-firmware, het Code Composer-project met AxumCore en AxumModulecfg? Zonder die broncode is route 2 een flink stuk reverse engineering.
+- Zit de PCI2040 op de DSP-kaart zelf, met PCI over de backplane vanaf de Kontron-carrier? Of zitten de Kontron en de DSP-kaart op één bord? Dat bepaalt of route 1 via de backplane kan.
+
+Cooked for 47s · done 0:43
